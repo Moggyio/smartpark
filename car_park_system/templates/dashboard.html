@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="page-title">📊 Dashboard</h2>
+
+<div class="stats-container">
+    <div class="stat-card">🚘 Total Spaces: <strong>{{ total }}</strong></div>
+    <div class="stat-card occupied"> Occupied: <strong>{{ occupied }}</strong></div>
+    <div class="stat-card free">Free Spaces: <strong>{{ free }}</strong></div>
+</div>
+
+<table class="styled-table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Plate Number</th>
+            <th>Time In</th>
+            <th>Time Out</th>
+            <th>Fee</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for p in plates %}
+        <tr>
+            <td>{{ p.id }}</td>
+            <td>{{ p.plate_number }}</td>
+            <td>{{ p.time_in }}</td>
+            <td>{{ p.time_out }}</td>
+            <td>{{ p.parking_fee }}</td>
+            <td>
+                <a href="{{ url_for('edit_plate', plate_id=p.id) }}" class="btn edit-btn">✏ Edit</a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<style>
+.page-title {
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 26px;
+    color: #cc5500;
+}
+.stats-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+.stat-card {
+    background: #ffe0b3;
+    padding: 15px 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    font-size: 18px;
+}
+.stat-card.free {
+    background: #d6f5d6;
+}
+.stat-card.occupied {
+    background: #ffcccc;
+}
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+.styled-table th, .styled-table td {
+    padding: 12px 15px;
+    text-align: center;
+}
+.styled-table th {
+    background: #ff944d;
+    color: white;
+}
+.styled-table tr:nth-child(even) {
+    background: #fff5e6;
+}
+.btn {
+    padding: 8px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.3s, transform 0.2s;
+}
+.edit-btn {
+    background: #ff944d;
+    color: white;
+}
+.edit-btn:hover {
+    background: #e67300;
+    transform: scale(1.05);
+}
+</style>
+{% endblock %}

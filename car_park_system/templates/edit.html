@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="edit-container">
+    <h2 class="page-title">✏ Edit Plate: <span>{{ plate.plate_number }}</span></h2>
+
+    <form method="POST" class="edit-form">
+        <div class="form-group">
+            <label for="time_in">⏰ Time In:</label>
+            <input type="datetime-local" id="time_in" name="time_in"
+                value="{{ plate.time_in.strftime('%Y-%m-%dT%H:%M') if plate.time_in else '' }}">
+        </div>
+
+        <div class="form-group">
+            <label for="time_out">⏰ Time Out:</label>
+            <input type="datetime-local" id="time_out" name="time_out"
+                value="{{ plate.time_out.strftime('%Y-%m-%dT%H:%M') if plate.time_out else '' }}">
+        </div>
+
+        <div class="form-group">
+            <label for="fee">💲 Fee (calculated):</label>
+            <input type="text" id="fee" value="{{ plate.parking_fee }}" readonly>
+        </div>
+
+        <div class="button-group">
+            <button type="submit" class="btn save-btn">💾 Save</button>
+            <a href="{{ url_for('dashboard') }}" class="btn cancel-btn">⬅ Back</a>
+        </div>
+    </form>
+</div>
+
+<style>
+.edit-container {
+    max-width: 600px;
+    margin: 40px auto;
+    background: white;
+    padding: 25px;
+    border-radius: 15px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+}
+.page-title {
+    text-align: center;
+    font-size: 24px;
+    color: #cc5500;
+    margin-bottom: 20px;
+}
+.page-title span {
+    font-weight: bold;
+    color: #b33c00;
+}
+.edit-form .form-group {
+    margin-bottom: 18px;
+}
+.edit-form label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 6px;
+    color: #663300;
+}
+.edit-form input {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #ffaa80;
+    border-radius: 8px;
+    font-size: 15px;
+    transition: border-color 0.3s;
+}
+.edit-form input:focus {
+    border-color: #ff6600;
+    outline: none;
+}
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+.btn {
+    padding: 12px 20px;
+    font-size: 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    text-align: center;
+    transition: transform 0.2s ease, background-color 0.3s ease;
+}
+.save-btn {
+    background: #ff944d;
+    color: white;
+}
+.save-btn:hover {
+    background: #e67300;
+    transform: scale(1.05);
+}
+.cancel-btn {
+    background: #999;
+    color: white;
+}
+.cancel-btn:hover {
+    background: #666;
+    transform: scale(1.05);
+}
+</style>
+
+<script>
+document.addEventListener("input", function() {
+    const timeIn = document.getElementById("time_in").value;
+    const timeOut = document.getElementById("time_out").value;
+    const feeField = document.getElementById("fee");
+
+    if (timeIn && timeOut) {
+        const inDate = new Date(timeIn);
+        const outDate = new Date(timeOut);
+        const diffMs = outDate - inDate;
+
+        if (diffMs > 0) {
+            const hours = Math.ceil(diffMs / (1000 * 60 * 60));
+            const fee = hours * 2.5; // $2.5/hour
+            feeField.value = "$" + fee.toFixed(2);
+        } else {
+            feeField.value = "Invalid";
+        }
+    } else {
+        feeField.value = "";
+    }
+});
+</script>
+{% endblock %}

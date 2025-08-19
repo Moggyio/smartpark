@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Car Park System</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            margin: 0;
+            font-family: "Segoe UI", sans-serif;
+            background: linear-gradient(135deg, #fff5e6, #ffe6e6);
+            color: #333;
+        }
+        header {
+            background: #ff944d;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        nav a {
+            color: white;
+            margin-left: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s;
+        }
+        nav a:hover {
+            color: #663300;
+        }
+        main {
+            padding: 30px;
+        }
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            padding: 15px;
+            background: #ffcc99;
+            color: #663300;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>🚗 Car Park System</h1>
+        <nav>
+            <a href="{{ url_for('dashboard') }}">📊 Dashboard</a>
+        </nav>
+    </header>
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        © {{ 2025 }} Car Park System — Smooth & Simple Parking
+    </footer>
+</body>
+</html>
